@@ -229,14 +229,6 @@ Uploaded post images are stored under `wwwroot/images/posts` (content images und
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
-Third-party templates and libraries (AdminLTE, CKEditor, Bootstrap, jQuery, Chart.js, *Mag*) keep their own licenses.
-
----
-
 ## 🙏 Acknowledgements
 
 - [AdminLTE 3](https://adminlte.io/) — admin panel template
