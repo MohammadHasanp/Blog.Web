@@ -1,0 +1,25 @@
+﻿@page
+@model Blog.Web.Pages.Auth.RegisterModel
+@{
+    Layout = "Shared/_AuthLayout";
+    ViewData["Title"] = "ثبت نام";
+}
+<form method="post">
+    <h1>@ViewData["Title"]</h1>
+    <div>
+        <input asp-for="FullName" type="text" placeholder="نام کاربری" id="username" />
+        <span asp-validation-for="FullName" style="color: red"></span>
+    </div>
+    <div>
+        <input asp-for="UserName" type="text" placeholder="نام و نام خانوادگی" />
+        <span asp-validation-for="UserName" style="color: red"></span>
+    </div>
+    <div>
+        <input asp-for="Password" type="password" placeholder="کلمه عبور"  id="password" />
+        <span asp-validation-for="Password" style="color: red"></span>
+    </div>
+    <div>
+        <input type="submit" value="ثبت نام" />
+        <a asp-page="Login">ورود به سایت</a>
+    </div>
+</form>

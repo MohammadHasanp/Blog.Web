@@ -1,0 +1,87 @@
+﻿@using Blog.CoreLayer.Services.Category
+@using Blog.Web.Areas.Admin.Models.Posts;
+@model EditPostViewModel;
+@inject ICategoryServices _categoryservices;
+
+@{
+     ViewData["Title"] = "ویرایش مقالات";
+    var categoryes = _categoryservices.GetAllCategory();
+    ViewData["selected"] = "posts";
+}
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard"></i> خانه</a> </li>
+        <li><a asp-area="Admin" asp-controller="Post" asp-action="Index"><i class="fa fa-dashboard"></i>مقالات</a> </li>
+    </ol>
+</section>
+<section class="content" style="margin-top: 33px">
+
+    <form class="box box-danger" method="post" asp-area="Admin" asp-controller="Post" asp-action="Edit" enctype="multipart/form-data">
+
+        <div class="box box-row">
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Title)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.Slug)
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.Description)
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CategoryId"></label>
+                    <select asp-for="CategoryId" class="form-control">
+                        <option value="null">انتخاب کنید</option>
+                        @foreach (var item in categoryes.Where(c => c.ParentId == null))
+                        {
+                            <option value="@item.ID">@item.Title</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="CategoryId"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="SubCategoryID"></label>
+                    <select asp-for="SubCategoryID" class="form-control">
+                        <option value="0">انتخاب کنید</option>
+                        @foreach (var item in categoryes.Where(c => c.ParentId == Model.CategoryId))
+                        {
+                            <option value="@item.ID">@item.Title</option>
+                        }
+                    </select>
+                    <span class="text-danger" asp-validation-for="SubCategoryID"></span>
+                </div>
+            </div>
+            <div class="col-md-12">
+                @Html.EditorFor(m => m.imageFile)
+            </div>
+            <div class="col-md-6">
+                @Html.EditorFor(m => m.IsSpecial)
+            </div>
+        </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+</section>
+@section scripts {
+    <script>
+        $("#CategoryId").change(function () {
+            var categoryId = $(this).val();
+            $.ajax({
+                url: "/admin/category/GetChildCategoryes?parentId=" + categoryId,
+                type: "get"
+            }).done(function (data) {
+                $("#SubCategoryID").html(`<option value='0'>انتخاب کنید</option>`);
+
+                for (var i in data) {
+                    var category = data[i];
+                    $("#SubCategoryID").append(`<option value='${category.id}'>${category.title}</option>`);
+                }
+            });
+        })
+    </script>
+}

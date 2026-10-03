@@ -1,0 +1,64 @@
+﻿@using Blog.CoreLayer.Dtos.Categoryes
+@model List<GetCategoryDto>
+<header class="nav">
+    <div class="nav__holder nav--sticky">
+        <div class="container relative">
+            <div class="flex-parent">
+                <button class="nav-icon-toggle" id="nav-icon-toggle" aria-label="Open side menu">
+                    <span class="nav-icon-toggle__box">
+                        <span class="nav-icon-toggle__inner"></span>
+                    </span>
+                </button>
+                <a href="index.html" class="logo">
+                    @* <img class="logo__img" src="images/posts/11234857-42ed-4abc-85e6-cdd098bb4c411733582459.893h" alt="logo"> *@
+                </a>
+                <nav class="flex-child nav__wrap d-none d-lg-block">
+                    <ul class="nav__menu">
+                        <li>
+                            <a href="/index">صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Where(p => p.ParentId == null))
+                        {
+                            var HasChild = Model.Any(p => p.ParentId == item.ID);
+                            @if (HasChild)
+                            {
+                                <li class="nav__dropdown">
+                                    <a href="/search?categoryslug= @item.Slug">@item.Title</a>
+                                    <ul class="nav__dropdown-menu">
+                                        @foreach (var child in Model.Where(p => p.ParentId == item.ID))
+                                        {
+                                            <li>
+                                                <a href="/search?categoryslug=@child.Slug">@child.Title</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/search?categoryslug=@item.Slug">@item.Title</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </nav>
+                <div class="nav__right">
+                    <div class="nav__right-item nav__search">
+                        <a href="#" class="nav__search-trigger" id="nav__search-trigger">
+                            <i class="ui-search nav__search-trigger-icon"></i>
+                        </a>
+                        <div class="nav__search-box" id="nav__search-box">
+                            <form action="/search" class="nav__search-form">
+                                <input type="text" name="q" placeholder="جستجو مقالات" class="nav__search-input">
+                                <button type="submit" class="search-button btn btn-lg btn-color btn-button">
+                                    <i class="ui-search nav__search-icon"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

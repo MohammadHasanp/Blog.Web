@@ -1,0 +1,77 @@
+﻿@page "{handler?}"
+@using Blog.CoreLayer.Dtos.Categoryes
+@using Blog.CoreLayer.Services.Category
+@using Blog.CoreLayer.Utilities
+@model Blog.Web.Pages.SearchModel
+@inject ICategoryServices _CategoryServices;
+@{
+    var search = "";
+    GetCategoryDto category = null;
+    if (!string.IsNullOrWhiteSpace(Model.Filter.FilterParams.Slug))
+    {
+        category = _CategoryServices.GetCategoryDto(Model.Filter.FilterParams.Slug);
+        if (category != null)
+        {
+            search = category.Title;
+        }
+    }
+    else
+    {
+        search = Model.Filter.FilterParams.Title ?? "مقالات سایت";
+    }
+    ViewData["Title"] = search;
+}
+@section MetaTags
+{
+    @if (category != null)
+    {
+        <meta name="description" content="@category.MetaDescription">
+        <meta name="og:description" content="@category.MetaDescription">
+        <meta name="twitter:description" content="@category.MetaDescription">
+        <meta name="keywords" content="@category.MetaTag">
+    }
+}
+<div class="main-container container pt-40" id="main-container">
+    <div class="row">
+        <div class="col-lg-8 blog__content mb-72">
+            @if (search != null)
+            {
+                <h1 class="page-title">نتایج جستجو برای: @search</h1>
+            }
+            <div id="ajaxSearch">
+                <partial name="_SearchView" model="Model.Filter" />
+            </div>
+
+        </div>
+        <aside class="col-lg-4 sidebar sidebar--right" id="Popular_post">
+
+        </aside>
+    </div>
+    <div style="left: 3px;width: 1201px;" class="title-wrap title-wrap--line">
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        function ajaxPagination(PageId)
+        {
+            const params = new URLSearchParams(window.location.search);
+            var categoryslug = '';
+            var q= '';
+            if(params.has('categoryslug'))
+            {
+                categoryslug = params.get("categoryslug");
+            }
+            if(params.has('q')){
+                q = params.get('q');
+            }
+            $.ajax({
+            url:`/search/Pagination?pageid=${PageId}&q=${q}&categoryslug=${categoryslug}`,
+            type:"get",
+            }).done(function(data){
+                $("#ajaxSearch").html(data);
+            });
+        }
+
+    </script>
+}

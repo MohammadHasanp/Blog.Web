@@ -1,0 +1,89 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"]</title>
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="/Admin/dist/css/bootstrap-theme.css">
+
+    <link rel="stylesheet" href="/Admin/dist/css/rtl.css">
+
+    <link rel="stylesheet" href="/Admin/bower_components/font-awesome/css/font-awesome.min.css">
+  
+    <link rel="stylesheet" href="/Admin/bower_components/Ionicons/css/ionicons.min.css">
+   
+    <link rel="stylesheet" href="/Admin/dist/css/AdminLTE.css">
+
+    <link rel="stylesheet" href="/Admin/dist/css/skins/_all-skins.min.css">
+
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  
+    <link rel="stylesheet" href="/Admin/dist/css/customize-adminlte.css">
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="modal" id="defult_model" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                </div>
+              
+
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+
+        @* in Headeer *@
+
+       <partial name="_Header"/>
+
+       @* in sidbar *@
+
+       <partial name="_SideBar"/>
+       @* in renderbody *@
+
+        <div class="content-wrapper">
+         @RenderBody()
+         </div>
+
+        <footer class="main-footer text-left">
+            <strong>
+                @* Copyleft &copy; 2014-2017 <a href="https://adminlte.io">Almsaeed Studio</a> & <a href="http://hosseinizadeh.ir/adminlte">Alireza Hosseinizadeh</a> *@
+            </strong>
+        </footer>
+
+
+       
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <script src="/Admin/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/Admin/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Admin/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/Admin/bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="/Admin/dist/js/adminlte.min.js"></script>
+    <script src="/Admin/dist/js/demo.js"></script>
+    <script src="/js/Custom.js"></script>
+    <script>
+        $(document).ready(function () {
+          $('.sidebar-menu').tree()
+        })
+    </script>
+    @await RenderSectionAsync("Scripts",false)
+</body>
+
+</html>

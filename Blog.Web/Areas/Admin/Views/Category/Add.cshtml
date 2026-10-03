@@ -1,0 +1,52 @@
+﻿@model Blog.Web.Areas.Admin.Models.Categoryes.CreateCategoryViewModel;
+@{
+    ViewData["Title"] = " افزودن دسته بندی ";
+    ViewData["selected"] = "category";
+}
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard"></i> خانه</a> </li>
+        <li><a asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="fa fa-dashboard"></i> دسته بندی ها</a> </li>
+    </ol>
+</section>
+<section class="content" style="margin-top: 33px">
+
+    <form class="box box-danger" method="post" asp-area="Admin" asp-controller="Category" asp-action="Add">
+
+        <div class="box box-row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <input class="form-control" asp-for="Title" />
+                    <span class="text-danger"  asp-validation-for="Title"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Slug"></label>
+                    <input class="form-control" asp-for="Slug" />
+                    <span class="text-danger" asp-validation-for="Slug"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MetaTag"></label>
+                    <input class="form-control" asp-for="MetaTag" />
+                    <span class="text-danger" asp-validation-for="MetaTag"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="MetaDescription"></label>
+                    <textarea class="form-control" asp-for="MetaDescription"></textarea>
+                    <span class="text-danger" asp-validation-for="MetaDescription"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="box-footer">
+            <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+</section>

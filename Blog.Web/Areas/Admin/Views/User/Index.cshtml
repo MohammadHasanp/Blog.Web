@@ -1,0 +1,116 @@
+﻿@using Blog.CoreLayer.Dtos.User
+@using Blog.CoreLayer.Services.User
+@using static System.Collections.Specialized.BitVector32
+@model UserFilterDto
+@{
+    ViewData["Title"] = "مدیریت کاربران";
+    ViewData["selected"] = "Users";
+    var count = 1;
+}
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard"></i> خانه</a> </li>
+        <li><a asp-area="Admin" asp-controller="User" asp-action="Index"><i class="fa fa-dashboard"></i> مدیریت کاربران</a> </li>
+    </ol>
+    <section class="content">
+        <div class="box box-danger">
+            <div class="box box-body">
+                <form>
+                    <div class=" box-header">
+                        <button type="submit" class="btn btn-info">Filter</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <input asp-route-username="@Model.UserFilter.FullName" class="form-control" type="text" placeholder="نام و نام خوانوانگی" name="fullname" value="@Model.UserFilter.FullName" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <input asp-route-fullname="@Model.UserFilter.UserName" class="form-control" type="text" placeholder="نام کاربری" name="username" value="@Model.UserFilter.UserName" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-body p-0">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>نام کاربری</th>
+                            <th>نام و نام خوانوادگی</th>
+                            <th> نقش</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Users)
+                        {
+                            <tr>
+                                <th>@count</th>
+                                @*   <th>
+                                    <img style="max-width:150px" src="/images/posts/@item.ImageName" />
+                                </th> *@
+                                <th>@item.UserName</th>
+                                <th>@item.FullName</th>
+                                <th>@item.Role</th>
+                                <th>
+                                    <open-modal title="ویرایش کاربران" 
+                                    url="@Url.Action("ShowEditUser","User",new{userid = item.UserId})">
+                                        ویرایش
+                                    </open-modal>
+                                    @*  <a onclick="OpenModal(`/Admin/User/ShowEditUser?userid=${@item.UserId}`,'defult_model','ویرایش کاربر')" href="#" class="btn btn-info">ویرایش</a> *@
+                                </th>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_Pagination" model="Model" />
+
+        </div>
+
+    </section>
+</section>
+@section Scripts
+{
+    <script>
+            function OpenModal(url, name, title) {
+            var modalSize = 'modal-lg';
+            var that = this;
+            $('#' + name + ' .modal-body').html('');
+
+            $.ajax({
+                url: url,
+                type: "get",
+                beforeSend: function () {
+                    $(".loading").show();
+                },
+                complete: function () {
+                    $(".loading").hide();
+                },
+            }).done(function (result) {
+                if (result) {
+                    $('#' + name + ' .modal-body').html(result);
+                    $('#' + name + ' .modal-title').html(title);
+
+                    $('#' + name).modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    },
+                        'show');
+
+                    $('#' + name + ' .modal-dialog').removeClass('modal-lg modal-xl modal-sm modal-full');
+                    $('#' + name + ' .modal-dialog').addClass(modalSize);
+
+                    const form = $("#" + name + ' form');
+                    if (form) {
+                        $.validator.unobtrusive.parse(form);
+                    }
+                }
+            });
+
+        }
+    </script>
+}

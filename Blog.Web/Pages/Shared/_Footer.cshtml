@@ -1,0 +1,122 @@
+﻿@using Blog.CoreLayer.Dtos.Categoryes
+@using Blog.CoreLayer.Services.Category
+@using Blog.CoreLayer.Services.Posts
+@using Blog.CoreLayer.Utilities
+@model List<GetCategoryDto>
+@inject ICategoryServices services
+@inject IPostServices Services
+@{
+    var category = services.GetAllCategory();
+    var post = Services.GetPopularPost();
+    post = post.Take(2).ToList();
+}
+<footer style="top:inherit;padding:20px;" class="footer footer--light">
+    <div class="container">
+        <div style="padding :0;" class="footer__widgets">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <aside class="widget widget-logo">
+                        <p style="padding-top:10px;" class="copyright">
+                            استفاده از مطالب تاپ‌کالا مگ برای مقاصد غیرتجاری با ذکر نام تاپ‌کالا مگ و لینک به منبع بلامانع است. حقوق این سایت به شرکت نوآوران فن‌آوازه (فروشگاه آنلاین تاپ‌کالا) تعلق دارد.
+                        </p>
+                        @*  <div class="socials socials--large socials--rounded mb-24">
+                            <a href="#" class="social social-facebook" aria-label="facebook"><i class="ui-facebook"></i></a>
+                            <a href="#" class="social social-twitter" aria-label="twitter"><i class="ui-twitter"></i></a>
+                            <a href="#" class="social social-google-plus" aria-label="google+"><i class="ui-google"></i></a>
+                            <a href="#" class="social social-youtube" aria-label="youtube"><i class="ui-youtube"></i></a>
+                            <a href="#" class="social social-instagram" aria-label="instagram"><i class="ui-instagram"></i></a>
+                        </div> *@
+                    </aside>
+                </div>
+                @if (category.Any())
+                {
+                    <div class="col-lg-2 col-md-6">
+                        <aside class="widget widget_nav_menu">
+                            <h4 class="widget-title">هشتگ های داغ</h4>
+
+                            @foreach (var item in category)
+                            {
+                                <ul>
+                                    <li><a asp-page="Search" asp-route-CategorySlug="@item.Slug"># @item.Title</a></li>
+                                </ul>
+                            }
+                        </aside>
+                    </div>
+                }
+                @if (Model.Any())
+                {
+                    <aside class="widget widget-popular-posts">
+                        <h4 class="widget-title">محبوب ترین مقالات</h4>
+                        <ul class="post-list-small">
+                            @foreach (var posts in post)
+                            {
+                                <li class="post-list-small__item">
+                                    <article class="post-list-small__entry clearfix">
+                                        <div class="post-list-small__img-holder">
+                                            <div class="thumb-container thumb-100">
+                                                <a asp-page="Post" asp-route-slug="@posts.Slug">
+                                                    <img data-src="@Directories.GetPostImage(posts.ImageName)" src="img/empty.png" alt="@posts.Title" class="post-list-small__img--rounded lazyload">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="post-list-small__body">
+                                            <h3 class="post-list-small__entry-title">
+                                                <a asp-page="Post" asp-route-slug="@posts.Slug">@posts.Title</a>
+                                            </h3>
+                                            <ul class="entry__meta">
+                                                <li class="entry__meta-author">
+                                                    <span>نویسنده:</span>
+                                                    <a href="#"> @posts.NameUser</a>
+                                                </li>
+                                                <li class="entry__meta-date">
+                                                    @posts.Time.ToPersianDate("ds dd ms Y")
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </article>
+                                </li>
+                            }
+                        </ul>
+                    </aside>
+                }
+                @if (!User.Identity.IsAuthenticated)
+                {
+
+                    <div style="padding-right:70px;" class="col-lg-3 col-md-6">
+                        <aside class="widget widget_mc4wp_form_widget">
+                            <h4 class="widget-title">خبرنامه</h4>
+                            <p class="newsletter__text">
+                                <i class="ui-email newsletter__icon"></i>
+                                برای اطلاع از آخرین خبرها مشترک شوید
+                            </p>
+                            <div class="form-group">
+                                <a href="/Auth/Login"> <input  class="btn btn-lg btn-color" value="عضویت"></a>
+                            </div>
+                        </aside>
+                    </div>
+
+                }
+                else
+                {
+                    <div class="col-lg-3 col-md-6">
+                        <aside class="widget widget_mc4wp_form_widget">
+                            <h4 class="widget-title">خبرنامه</h4>
+                            <p class="newsletter__text">
+                                <i class="ui-email newsletter__icon"></i>
+                                با این وبلاگ اطلاعات خود را کامل کنید !
+                            </p>
+                            <p class="newsletter__text">
+                                <i class="ui-email newsletter__icon"></i>
+                                شما در حال حاضر مشترک این سایت هستید 
+                            </p>
+                            <p class="newsletter__text">
+                                <i class="ui-email newsletter__icon"></i>
+                                از پست های سایت کمال استفاده را ببرید
+                            </p>
+                        </aside>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</footer>

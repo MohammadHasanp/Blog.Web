@@ -1,0 +1,16 @@
+﻿@using Blog.CoreLayer.Dtos.User
+@model EditUserDto
+<form asp-area="Admin" asp-controller="User" asp-action="Edit" method="post">
+    @Html.HiddenFor(o=>o.UserId)
+  <div class="row">
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.FullNmae)
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(m => m.UserName)
+        </div><div class="col-md-6">
+            @Html.EditorFor(m => m.Role)
+        </div>
+  </div>
+  <button class="btn btn-success" type="submit">Edit</button>
+</form>
